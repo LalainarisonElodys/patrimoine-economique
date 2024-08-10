@@ -1,172 +1,129 @@
 import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
-import { Button, InputGroup, Form, FormLabel, Table } from "react-bootstrap";
-import JSON from '../../data/data.json';
-import { johnPatrimoine, valeur } from "../../index.js";
-/*
-function GestionDePatrimoine(){
-  const [data, setData] = useState(JSON);
-  const [newDate, setNewDate] = useState(new Date());
-  const [patrimoine, setPatrimoine] = useState(0);
+import {Table } from "react-bootstrap";
+import Possession from "../../models/possessions/Possession.js";
+import Personne from "../../models/Personne.js";
+import Flux from "../../models/possessions/Flux.js";
+import Patrimoine from "../../models/Patrimoine.js";
+
+
+const john =new Personne ("john");
+let array =[ ];
+
+function Tab() {
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch('../data.json')
-    .then (reponse => reponse.json())
-    .then (data => setData(data))
-    .catch(error => console.error('Error fetching data:', error))
+    fetch('./data.json')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Erreur des données');
+        }
+        return response.json();
+      })
+      .then((jsonData) => {
+        const possessions = jsonData.find(item => item.model === "Patrimoine").data.possessions;
+        setData(possessions);
+      })
+      .catch((error) => {
+        console.error('Erreur:', error);
+      });data
   }, []);
 
-  const patrimoineValue = (valeurI, dateDuDebut, datefin, tauxDAmortisseent) =>{
-    const debut = new Date(dateDuDebut);
-    const fin = new Date(datefin);
-    const news = new Date(newDate);
-  
-
-    const durree = (news - debut) / (1000 * 60 * 60 * 24 * 365);
-
-    const depreciation = tauxDAmortisseent * durree;
-    const nouveauValeur = valeurI * (1 - depreciation);
-
-    return Math.max(nouveauValeur, 0);
-
-  };
-
-  function handleClick(){
-    setPatrimoine(johnPatrimoine.getValeur())
-  }
-
-  console.log(data[1].possessions);
-  const listPossession = data[1].possessions
-  
-  return (
-    <>
-    <Table bordered border={4} className="mt-5 container">
-      <thead class="text-center">
-        <tr>
-          <th>Libelle</th>
-          <th>Valeur Initiale</th>
-          <th>Date début</th>
-          <th>Date fin</th>
-          <th>Taux d'amortissement</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((item, index) => {
-          <tr key={index}>
-            <td>{item.libelle}</td>
-            <td>{item.valeur} </td>
-            <td>{item.dateDebut}</td>
-            <td>{item.dateFin}</td>
-            <td>{item.tauxAmortissement * 100}</td>
-            <td> </td>
-          </tr>
-        })}
-      </tbody>
-    </Table>
-    </>
-  )
-
-}
-
-
-function dateAndSubmitbutton(){
-  
-  const [dateDebut, setDateDebut] = useState(new Date());
-
-  return (
-    <>
-    <InputGroup className="mt-5 container">
-      <p>Veiller entrer une date: </p> 
-      <br />
-      <input type="date" onSelect={dateDebut} onChange={(date) => setDateDebut(date)} />
-      <Button className=" btn btn-md bg-success" onClick={() => handleClick()}>
-        Valider
-      </Button>
-    </InputGroup>    
-    </>
-  )
-    /*
-  return (
-    <Form className="container mt-5">
-        <FormLabel className="text-primary mb-2">Veiller entrer une date :</FormLabel> 
-        <br />
-        <input type="date"/> 
-        <br />
-        <Button className="mt-5 btn btn-md bg-success">
-            Submit
-        </Button>
-    </Form>
-)
-    */
-
-/*
-export default function App(){
-  return (
-    <>
-      {GestionDePatrimoine()}
-      {dateAndSubmitbutton()}
-    </>
-  )
-}
-*/
-
-
-
-function App() {
-  const [data, setData] = useState(JSON)
-  const [patrimoine, setPatrimoine] = useState(0)
-  const [selectedDate, setSelectedDate] = useState('');
-
-  // Fonction pour gérer le changement de la date
-  const handleDateChange = (event) => {
-    setSelectedDate(event.target.value);
-  };
-
-  function handleClick() {
-    setPatrimoine(johnPatrimoine.getValeur(selectedDate))
-  }
-
-  const listPossession = valeur[1].possessions;
-  
   return (
     <div>
-      <Table >
-        <thead>
-          <tr>
-            <th>nom</th>
-            <th>valeur</th>
-            <th>date debut</th>
-            <th>amortissement</th>
-            <th>possesseur</th>
-          </tr>
-        </thead>
-        <tbody>
-          {listPossession.map(function(possession, index) {
-            return (
+      {data.length > 0 ? (
+        <Table bordered border={4} className="mt-5 container">
+          <thead>
+            <tr className="text-center">
+              <th>Libelle</th>
+              <th>Valeur</th>
+              <th>Date de Début</th>
+              <th>Date de Fin</th>
+              <th>Taux d'Amortissement</th>
+              <th>Jour</th>
+              <th>Valeur Actuelle</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((item, index) => {
+              let poss ;
+               if (item.valeurConstante) {
+                  poss = new Flux (
+                    john,item.libelle,item.valeurConstante,new Date(item.dateDebut),new Date(item.dateFin),item.tauxAmortissement,item.jour
+                  )
+                
+               }
+               else {
+                  poss = new Possession (
+                    john, item.libelle,item.valeur, new Date(item.dateDebut), new Date(item.dateFin), item.tauxAmortissement,item.jour,
+                  )
+               }
+               array.push(poss);
+             
+              return (
               <tr key={index}>
-                <td>{possession.libelle}</td>
-                <td>{possession.valeur}</td>
-                <td>{possession.dateDebut.slice(0, 10)}</td>
-                <td>{possession.tauxAmortissement}</td>
-                <td>{possession.valeurActuelle}</td>
+                <td>{poss.libelle}</td>
+                <td>{poss.valeur || poss.valeurConstante}</td>
+                <td>{poss.dateDebut.toDateString()}</td>
+                <td>{poss.dateFin.toDateString() || '0'}</td>
+                <td>{poss.tauxAmortissement || '0'}</td>
+                <td>{poss.jour || '0'}</td>
+                <td>{poss.getValeur(new Date()) || '0'}</td>
               </tr>
-            )
-          })}
-        </tbody>
-      </Table>
-
-      <p>
-        Patrimoine :  {patrimoine} Ar
-      </p>
-      
-      <Form>
-        <input type="date" onChange={(e) => handleDateChange(e)}/>
-        <Button onClick={() => handleClick()}>Valider</Button>
-      </Form>
-  </div>
-  )
+            )})}
+          </tbody>
+        </Table>
+      ) : (
+        <p>...</p>
+      )}
+    </div>
+  );
+}
   
+function GeneratePatri(){
+  const patrimoine =new Patrimoine (john,array);
+  const [valeurDeLaDate, setDateValue] = useState("");
+  const [totalValeurPatri, setTotalValeurPatri] = useState(0);
+
+
+ const calc = () => {
+  const totalValue = patrimoine.getValeur(new Date(valeurDeLaDate));
+  setTotalValeurPatri(totalValue);
+ }
+
+
+  return (
+  <div className="container">
+    <label className="text-primary">Veiller entrer une date : </label>
+    <input type="date" name="date" value={valeurDeLaDate} onChange={(event)=>{
+      setDateValue (event.target.value);
+    }}/>
+
+    <input type="button" value="Valider" className="md-2 primary" 
+    onClick={calc}
+    />
+
+    {totalValeurPatri !== 0 && ( 
+    <p className="container mt-5">
+      La valeur de la Patrimoine est : {totalValeurPatri} Ar
+    </p>
+    )}
+    
+  </div>
+)
 }
 
-export default App
+ function App() {
+  return (
+    <div>
+      <h1 className="text-center text-primary mt-3">Possessions</h1>
+      <Tab />
+      <GeneratePatri />
+      
+    </div>
+
+  );
+}
+export default App;
