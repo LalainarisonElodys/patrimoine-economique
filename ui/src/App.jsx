@@ -8,6 +8,23 @@ import Flux from "../../models/possessions/Flux.js";
 import Patrimoine from "../../models/Patrimoine.js";
 
 
+const Header = () => {
+  return (
+    <header>
+        <nav className=" navbar-expand-lg fixed-top">
+          <div className="container-fluid">
+            <div className="collapse navbar-collapse">
+              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                <li><a href="/patrimoine">Patrimoine page</a></li>
+                <li><a href="/possession">Possession List page</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+  </header>
+  )
+}
+
 const john =new Personne ("john");
 let array =[ ];
 
@@ -118,6 +135,7 @@ function GeneratePatri(){
  function App() {
   return (
     <div>
+      <Header/>
       <h1 className="text-center text-primary mt-3">Possessions</h1>
       <Tab />
       <GeneratePatri />
