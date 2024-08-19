@@ -14,14 +14,14 @@ const Header = () => {
         <nav className=" navbar-expand-lg fixed-top">
           <div className="container-fluid">
             <div className="collapse navbar-collapse">
-              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <ul className="navbar-nav me-auto mb-2 mb-lg-0 ">
                 <li><a href="/patrimoine">Patrimoine page</a></li>
                 <li><a href="/possession">Possession List page</a></li>
               </ul>
             </div>
           </div>
         </nav>
-  </header>
+    </header>
   )
 }
 
@@ -61,6 +61,7 @@ function Tab() {
               <th>Taux d'Amortissement</th>
               <th>Jour</th>
               <th>Valeur Actuelle</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -88,6 +89,10 @@ function Tab() {
                 <td>{poss.tauxAmortissement || '0'}</td>
                 <td>{poss.jour || '0'}</td>
                 <td>{poss.getValeur(new Date()) || '0'}</td>
+                <td>
+                  <button className="btn btn-info p-1 m-1" /*onClick={() => window.location.href = `/possession/${p.libelle}/update`}*/>Edit</button>
+                  <button className="btn btn-danger p-1 m-1" /*onClick={() => handleClose(p.libelle)}*/>Close</button>
+                </td>
               </tr>
             )})}
           </tbody>
