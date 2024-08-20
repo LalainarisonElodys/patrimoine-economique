@@ -11,7 +11,7 @@ import Patrimoine from "../../models/Patrimoine.js";
 const Header = () => {
   return (
     <header>
-        <nav className=" navbar-expand-lg fixed-top">
+        <nav className=" navbar-expand-lg fixed-top ">
           <div className="container-fluid">
             <div className="collapse navbar-collapse">
               <ul className="navbar-nav me-auto mb-2 mb-lg-0 ">
@@ -128,11 +128,13 @@ function GeneratePatri(){
     />
 
     {totalValeurPatri !== 0 && ( 
-    <p className="container mt-5">
+    <p className="container mt-3">
       La valeur de la Patrimoine est : {totalValeurPatri} Ar
     </p>
     )}
-    
+    <br />
+    <button className="btn btn-primary m-3 " /*onClick={() => window.location.href = '/possession/create'}*/>Create new possession</button>
+
   </div>
 )
 }
@@ -141,7 +143,7 @@ function GeneratePatri(){
   return (
     <div>
       <Header/>
-      <h1 className="text-center text-primary mt-3">Possessions</h1>
+      <h1 className="text-center text-primary mt-3">Possessions list</h1>
       <Tab />
       <GeneratePatri />
       
