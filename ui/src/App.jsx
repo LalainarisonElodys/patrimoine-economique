@@ -6,11 +6,18 @@ import Possession from "../../models/possessions/Possession.js";
 import Personne from "../../models/Personne.js";
 import Flux from "../../models/possessions/Flux.js";
 import Patrimoine from "../../models/Patrimoine.js";
+import { Link } from 'react-router-dom';
 
 
 const Header = () => {
   return (
     <header>
+      <nav>
+        <Link to="/patrimoine">Page Patrimoine</Link>
+        <Link to="/possession">Page List Possession</Link>
+      </nav>
+    </header>
+    /*<header>
         <nav className=" navbar-expand-lg fixed-top ">
           <div className="container-fluid">
             <div className="collapse navbar-collapse">
@@ -21,7 +28,7 @@ const Header = () => {
             </div>
           </div>
         </nav>
-    </header>
+    </header>*/
   )
 }
 
@@ -48,6 +55,10 @@ function Tab() {
       });data
   }, []);
 
+  const handleClose = async (libelle) => {
+    await axios.post(`http://localhost:5000/possession/${libelle}/close`);
+    setPossessions(possessions.map(p => p.libelle === libelle ? { ...p, dateFin: new Date().toISOString().split('T')[0] } : p));
+};
   return (
     <div>
       {data.length > 0 ? (
@@ -90,8 +101,8 @@ function Tab() {
                 <td>{poss.jour || '0'}</td>
                 <td>{poss.getValeur(new Date()) || '0'}</td>
                 <td>
-                  <button className="btn btn-info p-1 m-1" /*onClick={() => window.location.href = `/possession/${p.libelle}/update`}*/>Edit</button>
-                  <button className="btn btn-danger p-1 m-1" /*onClick={() => handleClose(p.libelle)}*/>Close</button>
+                  <button className="btn btn-info p-1 m-1" onClick={() => window.location.href = `/possession/${p.libelle}/update`}>Edit</button>
+                  <button className="btn btn-danger p-1 m-1" onClick={() => handleClose(p.libelle)}>Close</button>
                 </td>
               </tr>
             )})}
@@ -133,7 +144,7 @@ function GeneratePatri(){
     </p>
     )}
     <br />
-    <button className="btn btn-primary m-3 " /*onClick={() => window.location.href = '/possession/create'}*/>Create new possession</button>
+    <button className="btn btn-primary m-3 " onClick={() => window.location.href = '/possession/create'}>Create new possession</button>
 
   </div>
 )
