@@ -7,14 +7,16 @@ import Personne from "../../models/Personne.js";
 import Flux from "../../models/possessions/Flux.js";
 import Patrimoine from "../../models/Patrimoine.js";
 import { Link } from 'react-router-dom';
-
-
+import Patrimoine from './pages/patrimoine.jsx';
+//import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 const Header = () => {
   return (
     <header>
       <nav>
-        <Link to="/patrimoine">Page Patrimoine</Link>
-        <Link to="/possession">Page List Possession</Link>
+        <ul>
+          <li><Link to="/patrimoine">Page Patrimoine</Link></li>
+          <li><Link to="/possession">Page List Possession</Link></li>
+        </ul>
       </nav>
     </header>
     /*<header>
