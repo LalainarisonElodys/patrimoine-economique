@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
+//exemple possession pour tester
+let possessions = [
+    { libelle: 'House', valeur: 200000, dateDebut: '2022-01-01', taux: 0.03, dateFin: null }
+];
 //maka liste an'ilay possession
 router.get('/', (req, res) => {
     res.json(possessions);
@@ -37,5 +41,4 @@ router.post('/:libelle/close', (req, res) => {
         res.status(404).json({ message: 'Possession not found' });
     }
 });
-
 module.exports = router;

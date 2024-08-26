@@ -14,6 +14,6 @@ app.use('/patrimoine', patrimoineRoutes);
 
 
 app.listen(port, () => {
-    console.log("Serveur running on http://localhost:5000");
+    console.log(`Server running on http://localhost:${port}`);
     
 })

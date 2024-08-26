@@ -6,7 +6,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
 
 
-const Patrimoine = () => {
+const patriMoine = () => {
     const [dateDebut, setDateDebut] = useState(null);
     const [dateFin, setDateFin] = useState(null);
     const [jour, setJour] = useState('');
@@ -30,14 +30,4 @@ const Patrimoine = () => {
     );
 };
 
-export default Patrimoine;
-
-
-/*
-DatePicker
-Link
-axios
-cors
-body-Parser
-*/
-
+export default patriMoine;

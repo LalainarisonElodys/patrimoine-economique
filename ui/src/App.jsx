@@ -6,33 +6,10 @@ import Possession from "../../models/possessions/Possession.js";
 import Personne from "../../models/Personne.js";
 import Flux from "../../models/possessions/Flux.js";
 import Patrimoine from "../../models/Patrimoine.js";
-import { Link } from 'react-router-dom';
-import Patrimoine from './pages/patrimoine.jsx';
-//import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-const Header = () => {
-  return (
-    <header>
-      <nav>
-        <ul>
-          <li><Link to="/patrimoine">Page Patrimoine</Link></li>
-          <li><Link to="/possession">Page List Possession</Link></li>
-        </ul>
-      </nav>
-    </header>
-    /*<header>
-        <nav className=" navbar-expand-lg fixed-top ">
-          <div className="container-fluid">
-            <div className="collapse navbar-collapse">
-              <ul className="navbar-nav me-auto mb-2 mb-lg-0 ">
-                <li><a href="/patrimoine">Patrimoine page</a></li>
-                <li><a href="/possession">Possession List page</a></li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-    </header>*/
-  )
-}
+import Header from "./component/Header.jsx"
+import CreatePossession from "./pages/createPossession.jsx";
+
+
 
 const john =new Personne ("john");
 let array =[ ];
@@ -60,7 +37,8 @@ function Tab() {
   const handleClose = async (libelle) => {
     await axios.post(`http://localhost:5000/possession/${libelle}/close`);
     setPossessions(possessions.map(p => p.libelle === libelle ? { ...p, dateFin: new Date().toISOString().split('T')[0] } : p));
-};
+  }; 
+  
   return (
     <div>
       {data.length > 0 ? (
@@ -155,11 +133,10 @@ function GeneratePatri(){
  function App() {
   return (
     <div>
-      <Header/>
+       <Header />
       <h1 className="text-center text-primary mt-3">Possessions list</h1>
       <Tab />
       <GeneratePatri />
-      
     </div>
 
   );
