@@ -12,7 +12,6 @@ const patrimoineRoutes = require('./routes/patrimoine');
 app.use('/possession', possessionRoutes);
 app.use('/patrimoine', patrimoineRoutes);
 
-
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
     

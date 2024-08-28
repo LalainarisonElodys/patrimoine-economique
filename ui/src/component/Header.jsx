@@ -1,13 +1,16 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.js';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
     return (
-        <header className='container-fluid'>
-            <nav className="navbar navbar-expand-lg fixed-top">
-                <ul className="navbar-nav mb-5 mb-lg-0">
-                    <li><a href="">Possession List</a></li>
-                    <li><a href="">Patrimoine</a></li>
+        <header className='bg-black fixed-top'>
+          <span className='text-warning'>Gestion de patrimoine</span>
+            <nav>
+                <ul>
+                    <li ><Link to="/patrimoine">Patrimoine</Link></li>
+                    <li><Link to="/possession">Possessions</Link></li>
                 </ul>
             </nav>
         </header>
