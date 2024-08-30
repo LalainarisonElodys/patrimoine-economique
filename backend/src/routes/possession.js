@@ -1,19 +1,34 @@
-const possessionsData = require('../data');
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
+const path = require('path');
+
+const dataPath = path.join(__dirname, '../data.json');
 
 
+function getPossessions() {
+    const jsonData = fs.readFileSync(dataPath, 'utf-8');
+    const possessionsData = JSON.parse(jsonData);
+    return possessionsData.data.possessions;
+}
 
+function savePossessions(possessions) {
+    const possessionsData = { data: { possessions } };;
+    fs.writeFileSync(dataPath, JSON.stringify(possessionsData, null, 2));
+}
 
 //maka liste an'ilay possession
 router.get('/', (req, res) => {
-    res.json(possessionsData[0].data.possessions);
+    const possessions = getPossessions();
+    res.json({ data: { possessions } });
 });
 
 //m'créer possession
 router.post('/create', (req, res) => {
     const { libelle, valeur, dateDebut, taux } = req.body;
-    possessionsData.push({ libelle, valeur, dateDebut, taux, dateFin: null });
+    let possessions = getPossessions();
+    possessions.push({ libelle, valeur, dateDebut, taux, dateFin: null });
+    savePossessions(possessions);
     res.status(201).json({ message: 'Possession created' });
 });
 
@@ -21,9 +36,11 @@ router.post('/create', (req, res) => {
 router.put('/:libelle', (req, res) => {
     const { libelle } = req.params;
     const { dateFin } = req.body;
-    let possession = possessionsData.find(p => p.libelle === libelle);
+    let possessions = getPossessions();
+    let possession = possessions.find(p => p.libelle === libelle);
     if (possession) {
         possession.dateFin = dateFin;
+        savePossessions(possessions);
         res.json({ message: 'Possession updated' });
     } else {
         res.status(404).json({ message: 'Possession not found' });
@@ -33,9 +50,11 @@ router.put('/:libelle', (req, res) => {
 //mi'close an'ilay poss
 router.post('/:libelle/close', (req, res) => {
     const { libelle } = req.params;
-    let possession = possessionsData.find(p => p.libelle === libelle);
+    let possessions = getPossessions();
+    let possession = possessions.find(p => p.libelle === libelle);
     if (possession) {
         possession.dateFin = new Date().toISOString().split('T')[0];
+        savePossessions(possessions);
         res.json({ message: 'Possession closed' });
     } else {
         res.status(404).json({ message: 'Possession not found' });

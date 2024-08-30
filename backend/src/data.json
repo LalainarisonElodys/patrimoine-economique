@@ -1,4 +1,4 @@
-let possessionsData = [
+[
     {
         "model": "Patrimoine",
         "data": {
@@ -31,7 +31,4 @@ let possessionsData = [
             ]
         }
     }
-];
-
-
-module.exports = possessionsData;
+]

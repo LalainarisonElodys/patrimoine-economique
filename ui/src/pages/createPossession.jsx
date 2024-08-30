@@ -10,9 +10,11 @@ const CreatePossessionPage = () => {
     const navigate = useNavigate();
 
     const handleCreatePossession = async () => {
-        await createPossession({ libelle, valeur, dateDebut, taux });
-        navigate('/possession');
+        const response = await createPossession({ libelle, valeur, dateDebut, taux });
+        console.log('Réponse de création:', response);
+        setTimeout(() => navigate('/possession'), 500); 
     };
+    
 
     return (
         <div className='m-5'>

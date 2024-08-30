@@ -1,11 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const possessionsData = require('../data');
+const fs = require('fs');
+const path = require('path');
 
+const dataPath = path.join(__dirname, '../data.json');
+
+function getPossessions() {
+    const jsonData = fs.readFileSync(dataPath, 'utf-8');
+    const possessionsData = JSON.parse(jsonData);
+    return possessionsData.possessions;
+}
 //maka valeur an'ilay patrimoine
 router.get('/:date', (req, res) => {
     const { date } = req.params;
     let patrimoineValeur = calculatePatrimoineValueOnDate(date);
+    console.log('Valeur du patrimoine:', patrimoineValeur);
     res.json({ date, valeur: patrimoineValeur });
 });
 
@@ -21,7 +30,8 @@ function calculatePatrimoineValueOnDate(date) {
     let totalValue = 0;
     let targetDate = new Date(date);
 
-    possessionsData.forEach(possession => {
+    const possessions = getPossessions();
+    possessions.forEach(possession => {
         let possessionValue = possession.valeur;
         let possessionStartDate = new Date(possession.dateDebut);
         let possessionEndDate = possession.dateFin ? new Date(possession.dateFin) : null;
