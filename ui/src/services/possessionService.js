@@ -1,19 +1,18 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/possession';
-
-export const getPossessions = () => {
-    return axios.get(API_URL);
+export const getPossessions = async () => {
+    const response = await axios.get('http://localhost:5000/possession');
+    return response.data;
 };
 
 export const createPossession = (possession) => {
-    return axios.post(API_URL, possession);
+    return axios.post(`http://localhost:5000/possession/create`, possession);
 };
 
 export const updatePossession = (libelle, possession) => {
-    return axios.put(`${API_URL}/${libelle}`, possession);
+    return axios.put(`http://localhost:5000/possession/${libelle}`, possession);
 };
 
 export const closePossession = (libelle) => {
-    return axios.post(`${API_URL}/${libelle}/close`);
+    return axios.post(`http://localhost:5000/possession/${libelle}/close`);
 };

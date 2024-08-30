@@ -42,7 +42,7 @@ const CreatePossessionPage = () => {
                 </div>
             </div>
             <br />
-            <button className='btn btn-primary m-5' onClick={handleCreatePossession}>Créer</button>
+            <button className='btn btn-success m-5' onClick={handleCreatePossession}>Créer</button>
         </div>
         
     );

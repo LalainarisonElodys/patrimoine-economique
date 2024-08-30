@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const possessionsData = require('./possession'); // Assuming possession data is shared
-
+const possessionsData = require('../data');
 
 //maka valeur an'ilay patrimoine
 router.get('/:date', (req, res) => {
@@ -18,6 +17,7 @@ router.post('/range', (req, res) => {
 });
 
 function calculatePatrimoineValueOnDate(date) {
+    console.log('Calculating patrimoine value for date:', date);
     let totalValue = 0;
     let targetDate = new Date(date);
 
@@ -31,12 +31,12 @@ function calculatePatrimoineValueOnDate(date) {
 
                 let yearsElapsed = (targetDate - possessionStartDate) / (1000 * 60 * 60 * 24 * 365);
                 possessionValue -= possessionValue * (possession.tauxAmortissement / 100) * yearsElapsed;
-                possessionValue = Math.max(possessionValue, 0); // Évite les valeurs négatives
+                possessionValue = Math.max(possessionValue, 0); 
             }
             totalValue += possessionValue;
         }
     });
-
+    console.log('Total value calculated:', totalValue);
     return totalValue;
 }
 

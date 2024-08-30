@@ -12,19 +12,30 @@ const PossessionListPage = () => {
     }, []);
 
     const fetchPossessions = async () => {
-        const response = await getPossessions();
-        setPossessions(response.data);
+        try {
+            const response = await getPossessions();
+            console.log(response); 
+            setPossessions(response);
+            
+        } catch (error) {
+            console.error('Erreur lors du fetch des possessions:', error);
+        }
     };
-
+    
     const handleClosePossession = async (libelle) => {
-        await closePossession(libelle);
-        fetchPossessions(); 
+        try {
+            await closePossession(libelle);
+            fetchPossessions(); 
+        } catch (error) {
+            console.error('Erreur lors de la clôture de la possession:', error);
+        }
     };
+    
 
     return (
         <div>
             <h2 className='text-center mt-3 text-primary'>Liste des Possessions</h2>
-            <button className="btn btn-primary m-3" onClick={() => navigate('/possession/create')}>Créer une Possession</button>
+            
             <Table bordered border={4} className="mt-5 container">
                 <thead>
                     <tr className="text-center">
@@ -32,7 +43,7 @@ const PossessionListPage = () => {
                         <th>Valeur</th>
                         <th>Date Début</th>
                         <th>Date Fin</th>
-                        <th>Taux</th>
+                        <th>Taux Ammortissement</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -46,12 +57,13 @@ const PossessionListPage = () => {
                             <td>{possession.tauxAmortissement}</td>
                             <td>
                                 <button className="btn btn-info p-1 m-1"  onClick={() => navigate(`/possession/${possession.libelle}/update`)}>Edit</button>
-                                <button className="btn btn-danger p-1 m-1" onClick={() => handleClosePossession(possession.libelle)}>Clôturer</button>
+                                <button className="btn btn-danger p-1 m-1" onClick={() => handleClosePossession(possession.libelle)}>Close</button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
+            <button className="btn btn-primary m-3" onClick={() => navigate('/possession/create')}>Créer une Possession</button>
         </div>
     );
 };
