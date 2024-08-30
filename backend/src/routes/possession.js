@@ -6,17 +6,17 @@ router.get('/', (req, res) => {
 });
 
 
-router.post('/create', (req, res) => {
-    res.status(201).json({ message: 'Possession created' });
+router.post('/', (req, res) => {
+    res.send('Possession created');
 });
 
 
 router.put('/:libelle', (req, res) => {
-    res.send(`Possession est à jour`);
+    res.send(`Possession ${req.params.libelle} updated`);
 });
 
 router.post('/:libelle/close', (req, res) => {
-    res.send(`Possession à été bien fermer`);
+    res.send(`Possession ${req.params.libelle} closed`);
 });
 
 module.exports = router;

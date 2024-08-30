@@ -1,36 +1,83 @@
 import React, { useEffect, useState } from 'react';
-import { getPossessions, closePossession } from '../services/possessionService';
+import Possession from '../../../models/possessions/Possession';
 import { useNavigate } from 'react-router-dom';
-import { Table } from 'react-bootstrap';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { Form, Table } from 'react-bootstrap';
+
 
 const PossessionListPage = () => {
     const [possessions, setPossessions] = useState([]);
+    const [totalValeurActuelle, setTotalValeurActuelle] = useState(0);
     const navigate = useNavigate();
+    const [selectedDate, setSelectedDate] = useState(new Date());
 
     useEffect(() => {
-        fetchPossessions();
+        fetch('http://localhost:5000/api/patrimoine')
+            .then(response => {
+            if (!response.ok) {
+              throw new Error('Erreur réseau');
+            }
+            return response.json();
+            })
+            .then(data => {
+            const Data = data.data.possessions[0].data.possessions;
+    
+            const poss = Data.map(possession =>
+              new Possession(
+                possession.possesseur.nom,
+                possession.libelle,
+                possession.valeur,
+                new Date(possession.dateDebut),
+                possession.dateFin ? new Date(possession.dateFin) : null,
+                possession.tauxAmortissement || 0,
+                possession.valeurConstante || 0
+              )
+            );
+    
+            setPossessions(poss);
+            })
+            .catch(error => {
+            console.error('Erreur lors du chargement des données:', error);
+          });
     }, []);
+    
+    const handleDate = (date) => {
+        setSelectedDate(date);
+    };
 
-    const fetchPossessions = async () => {
-        try {
-            const response = await getPossessions();
-            console.log(response); 
-            setPossessions(response);
-            
-        } catch (error) {
-            console.error('Erreur lors du fetch des possessions:', error);
+    const handleSubmit = () => {
+        if (selectedDate) {
+            const updatePoss = possessions.map(possession => {
+            return new Possession(
+            possession.possesseur,
+            possession.libelle,
+            possession.valeur,
+            possession.dateDebut,
+            selectedDate,
+            possession.tauxAmortissement,
+            possession.valeurConstante
+            );
+        });
+    
+        const calculTotal = updatePoss.reduce((sum, possession) => {
+            return sum + possession.getValeur(selectedDate);
+        }, 0);
+    
+          setPossessions(updatePoss);
+          setTotalValeurActuelle(calculTotal);
         }
     };
+
+    const getInitValue= (possession) => {
+        return possession.valeur === 0 ? possession.valeurConstante : possession.valeur;
+      };
     
-    const handleClosePossession = async (libelle) => {
-        try {
-            await closePossession(libelle);
-            fetchPossessions(); 
-        } catch (error) {
-            console.error('Erreur lors de la clôture de la possession:', error);
-        }
-    };
-    
+      const closePossession = (libelle) => {
+        fetch(`/possession/${libelle}/close`, { method: 'PUT' })
+          .then(() => setPossessions(possessions.filter(p => p.libelle !== libelle)))
+          .catch(error => console.error('Erreur lors de la fermeture de la possession:', error));
+      };
 
     return (
         <div>
@@ -39,8 +86,10 @@ const PossessionListPage = () => {
             <Table bordered border={4} className="mt-5 container">
                 <thead>
                     <tr className="text-center">
+                        <th>Possesseur</th>
                         <th>Libelle</th>
-                        <th>Valeur</th>
+                        <th>Valeur initiale</th>
+                        <th>Valeur actuelle</th>
                         <th>Date Début</th>
                         <th>Date Fin</th>
                         <th>Taux Ammortissement</th>
@@ -48,29 +97,45 @@ const PossessionListPage = () => {
                     </tr>
                 </thead>
                 <tbody>
-            {Array.isArray(possessions) ? (
-                possessions.map(possession => (
-                    <tr key={possession.libelle}>
-                        <td>{possession.libelle}</td>
-                        <td>{possession.valeur}</td>
-                        <td>{possession.dateDebut}</td>
-                        <td>{possession.dateFin || 'En cours'}</td>
-                        <td>{possession.tauxAmortissement}</td>
-                        <td>
-                            <button className="btn btn-info p-1 m-1" onClick={() => navigate(`/possession/${possession.libelle}/update`)}>Edit</button>
-                            <button className="btn btn-danger p-1 m-1" onClick={() => handleClosePossession(possession.libelle)}>Close</button>
-                        </td>
+                    {possessions.length === 0 ? (
+                    <tr>
+                    <td colSpan="8">Aucune possession à afficher</td>
                     </tr>
-                ))
-            ) : (
-                <tr>
-                    <td colSpan="6" className="text-center">Aucune possession disponible</td>
-                </tr>
-            )}
-        </tbody>
+                    ) : (
+                        possessions.map((item, index) => (
+                            <tr key={index}>
+                                <td>{item.possesseur}</td>
+                                <td>{item.libelle}</td>
+                                <td>{getInitValue(item).toFixed(2)}</td>
+                                <td>{item.getValeur(selectedDate).toFixed(2)}</td>
+                                <td>{new Date(item.dateDebut).toLocaleDateString()}</td>
+                                <td>{item.dateFin ? new Date(item.dateFin).toLocaleDateString() : 'Non définie'}</td>
+                                <td>{item.tauxAmortissement} %</td>
+                                <td>
+                                    <button className="btn btn-info p-1 m-1" onClick={() => navigate(`/possession/${item.libelle}/update`)}>Edit</button>
+                                    <button className="btn btn-danger p-1 m-1" onClick={() => closePossession(item.libelle)}>Close</button>
+                                </td>
+                            </tr>
+                        ))
+                    )}
+                </tbody>
             </Table>
-            <button className="btn btn-primary m-3" onClick={() => navigate('/possession/create')}>Créer une Possession</button>
+            <Form className='m-3 border text-center'>
+            <div>
+                <div class="d-flex justify-content-evenly align-items-center">
+                    <label className="col-sm-4 control-label ">Veiller entrer la date: </label>
+                    <div className="col-sm-4">
+                       <DatePicker selected={selectedDate} className='form-control' onChange={handleDate} dateFormat="dd/MM/yyyy"/>
+                    </div>
+                </div>
+                <button className='btn btn-success m-3 mb-5' onClick={handleSubmit}>Valider</button>
+                {<p>La valeur du Patrimoine est : {totalValeurActuelle}</p>}
+            </div>
+            </Form>
+            
+            
         </div>
+        
     );
 };
 

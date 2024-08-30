@@ -13,8 +13,9 @@ const Header = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ml-auto">
-                        <Nav.Link as={Link} to="/patrimoine">Patrimoine</Nav.Link>
                         <Nav.Link as={Link} to="/possession">Possessions</Nav.Link>
+                        <Nav.Link as={Link} to="/possession/create">Crée une possession</Nav.Link>
+                        <Nav.Link as={Link} to="/chart">Graphique</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
