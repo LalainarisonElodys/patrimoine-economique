@@ -48,20 +48,26 @@ const PossessionListPage = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {possessions.map(possession => (
-                        <tr key={possession.libelle}>
-                            <td>{possession.libelle}</td>
-                            <td>{possession.valeur}</td>
-                            <td>{possession.dateDebut}</td>
-                            <td>{possession.dateFin || 'En cours'}</td>
-                            <td>{possession.tauxAmortissement}</td>
-                            <td>
-                                <button className="btn btn-info p-1 m-1"  onClick={() => navigate(`/possession/${possession.libelle}/update`)}>Edit</button>
-                                <button className="btn btn-danger p-1 m-1" onClick={() => handleClosePossession(possession.libelle)}>Close</button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
+            {Array.isArray(possessions) ? (
+                possessions.map(possession => (
+                    <tr key={possession.libelle}>
+                        <td>{possession.libelle}</td>
+                        <td>{possession.valeur}</td>
+                        <td>{possession.dateDebut}</td>
+                        <td>{possession.dateFin || 'En cours'}</td>
+                        <td>{possession.tauxAmortissement}</td>
+                        <td>
+                            <button className="btn btn-info p-1 m-1" onClick={() => navigate(`/possession/${possession.libelle}/update`)}>Edit</button>
+                            <button className="btn btn-danger p-1 m-1" onClick={() => handleClosePossession(possession.libelle)}>Close</button>
+                        </td>
+                    </tr>
+                ))
+            ) : (
+                <tr>
+                    <td colSpan="6" className="text-center">Aucune possession disponible</td>
+                </tr>
+            )}
+        </tbody>
             </Table>
             <button className="btn btn-primary m-3" onClick={() => navigate('/possession/create')}>Créer une Possession</button>
         </div>

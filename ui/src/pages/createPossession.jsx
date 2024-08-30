@@ -10,9 +10,18 @@ const CreatePossessionPage = () => {
     const navigate = useNavigate();
 
     const handleCreatePossession = async () => {
-        const response = await createPossession({ libelle, valeur, dateDebut, taux });
-        console.log('Réponse de création:', response);
-        setTimeout(() => navigate('/possession'), 500); 
+        try {
+            const response = await createPossession({
+                libelle,
+                valeur: Number(valeur),
+                dateDebut,
+                taux: Number(taux),
+            });
+            console.log('Réponse de création:', response);
+            setTimeout(() => navigate('/possession'), 500); 
+        } catch (error) {
+            console.error('Erreur lors de la création de la possession:', error);
+        }
     };
     
 
