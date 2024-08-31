@@ -105,8 +105,8 @@ function ChartPage() {
           </div>
             <div>
             {step === 1 && (
-            <button className="btn btn-primary mt-3 col-sm-2" onClick={handleValidation}>
-                Jour
+            <button className="btn btn-success mt-3 col-sm-2" onClick={handleValidation}>
+                Définir le jour
             </button>
             )}
             </div>
@@ -122,7 +122,7 @@ function ChartPage() {
               dateFormat="dd/MM/yyyy" className="form-control"  
             />
           </div>
-          <button className="btn btn-primary mt-3" onClick={handleValidateSelectedDate}>
+          <button className="btn btn-success mt-3" onClick={handleValidateSelectedDate}>
             Valider 
           </button>
         </div>

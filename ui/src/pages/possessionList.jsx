@@ -108,10 +108,10 @@ const PossessionListPage = () => {
                             <tr key={index}>
                                 <td>{item.possesseur}</td>
                                 <td>{item.libelle}</td>
-                                <td>{getInitValue(item).toFixed(2)}</td>
-                                <td>{item.getValeur(selectedDate).toFixed(2)}</td>
+                                <td>{getInitValue(item)}</td>
+                                <td>{item.getValeur(selectedDate)}</td>
                                 <td>{new Date(item.dateDebut).toLocaleDateString()}</td>
-                                <td>{item.dateFin ? new Date(item.dateFin).toLocaleDateString() : 'Non définie'}</td>
+                                <td>{item.dateFin ? new Date(item.dateFin).toLocaleDateString() : 'en cours'}</td>
                                 <td>{item.tauxAmortissement} %</td>
                                 <td>
                                     <button className="btn btn-info p-1 m-1" onClick={() => navigate(`/possession/${item.libelle}/update`)}>Edit</button>
