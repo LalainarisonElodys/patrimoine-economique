@@ -1,3 +1,5 @@
+
+
 import React, { useEffect, useState } from 'react';
 import Possession from '../../../models/possessions/Possession';
 import { useNavigate } from 'react-router-dom';
@@ -132,6 +134,7 @@ const PossessionListPage = () => {
                 {<p>La valeur du Patrimoine est : {totalValeurActuelle}</p>}
             </div>
             </Form>
+
             
             
         </div>
@@ -140,3 +143,5 @@ const PossessionListPage = () => {
 };
 
 export default PossessionListPage;
+
+

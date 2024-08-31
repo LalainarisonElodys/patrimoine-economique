@@ -1,5 +1,6 @@
+
+
 import React, { useState, useEffect } from 'react';
-import { updatePossession, getPossessions } from '../services/possessionService';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const UpdatePossessionPage = () => {
@@ -112,3 +113,7 @@ const UpdatePossessionPage = () => {
 };
 
 export default UpdatePossessionPage;
+
+
+
+

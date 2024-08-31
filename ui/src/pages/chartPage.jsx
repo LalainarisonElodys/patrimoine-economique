@@ -6,32 +6,32 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Line } from 'react-chartjs-2';
 
 function ChartPage() {
-  const [startDate, setStartDate] = useState(null);
+  const [dateDebut, setDateDebut] = useState(null);
   const [step, setStep] = useState(1);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [chartData, setChartData] = useState({});
+  const [choosenDate, setChoosenDate] = useState(null);
+  const [dateFin, setDateFin] = useState(null);
+  const [dateGraphe, setDateGraphe] = useState({});
 
-  const handleStartDateChange = (date) => {
-    setStartDate(date);
+  const handleDateDebut = (date) => {
+    setDateDebut(date);
   };
 
-  const handleEndDateChange = (date) => {
-    setEndDate(date);
+  const handleDateFin = (date) => {
+    setDateFin(date);
   };
 
-  const handleSelectedDateChange = (date) => {
-    setSelectedDate(date);
+  const handleChoosenDate = (date) => {
+    setChoosenDate(date);
   };
 
-  const handleValidateStartEndDates = () => {
-    if (startDate && endDate && startDate <= endDate) {
+  const handleValidation = () => {
+    if (dateDebut && dateFin && dateDebut <= dateFin) {
       setStep(2); 
     } 
   };
 
   const handleValidateSelectedDate = () => {
-    if (selectedDate && startDate && endDate && selectedDate >= startDate && selectedDate <= endDate) {
+    if (choosenDate && dateDebut && dateFin && choosenDate >= dateDebut && choosenDate <= dateFin) {
       updateChartData();
     }
   };
@@ -40,9 +40,9 @@ function ChartPage() {
     const labels = [];
     const values = [];
 
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    const selected = new Date(selectedDate);
+    const start = new Date(dateDebut);
+    const end = new Date(dateFin);
+    const selected = new Date(choosenDate);
 
     const daysBetween = (end - start) / (1000 * 60 * 60 * 24);
     const selectedDayIndex = (selected - start) / (1000 * 60 * 60 * 24);
@@ -68,8 +68,8 @@ function ChartPage() {
         {
           label: 'Valeur des Possessions',
           data: values,
-          backgroundColor: 'rgba(75, 192, 192, 0.2)', 
-          borderColor: 'rgb(75, 192, 192)', 
+          backgroundColor: '#945bfc', 
+          borderColor: '#80cdd6e0', 
           borderWidth: 2,
           fill: false, 
           tension: 0.4, 
@@ -78,79 +78,64 @@ function ChartPage() {
       ],
     };
 
-    setChartData(data);
+    setDateGraphe(data);
   };
 
   return (
-    <div className="container mt-5">
-      <h2 className="text-center mb-4">Graphique des Possessions</h2>
+    <div className="container mt-3">
+      <h2 className="text-center mb-4">Le Graphique</h2>
 
       <div className="mb-4">
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-sm-4">
             <div className="form-group">
-              <label>Date de Début :</label>
-              <DatePicker
-                selected={startDate}
-                onChange={handleStartDateChange}
-                selectsStart
-                startDate={startDate}
-                endDate={endDate}
-                dateFormat="yyyy/MM/dd"
-                className="form-control"
-              />
+              <label>Date Début :</label>
+              <DatePicker selected={dateDebut} onChange={handleDateDebut} selectsStart dateDebut={dateDebut}
+                dateFin={dateFin} dateFormat="dd/MM/yyyy" className="form-control"
+            />
             </div>
           </div>
           <div className="col-md-6">
             <div className="form-group">
-              <label>Date de Fin :</label>
-              <DatePicker
-                selected={endDate}
-                onChange={handleEndDateChange}
-                selectsEnd
-                startDate={startDate}
-                endDate={endDate}
-                minDate={startDate}
-                dateFormat="yyyy/MM/dd"
-                className="form-control"
-              />
+              <label>Date Fin :</label>
+              <DatePicker selected={dateFin} selectsEnd minDate={dateDebut} onChange={handleDateFin}
+                dateDebut={dateDebut} dateFin={dateFin} className="form-control" dateFormat="dd/MM/yyyy"
+             />
             </div>
           </div>
+            <div>
+            {step === 1 && (
+            <button className="btn btn-primary mt-3 col-sm-2" onClick={handleValidation}>
+                Jour
+            </button>
+            )}
+            </div>
         </div>
-        {step === 1 && (
-          <button className="btn btn-primary mt-3" onClick={handleValidateStartEndDates}>
-            Valider Dates Début/Fin
-          </button>
-        )}
+
       </div>
 
       {step === 2 && (
         <div className="mb-4">
           <div className="form-group">
-            <label>Date Sélectionnée :</label>
-            <DatePicker
-              selected={selectedDate}
-              onChange={handleSelectedDateChange}
-              minDate={startDate}
-              maxDate={endDate}
-              dateFormat="yyyy/MM/dd"
-              className="form-control"
+            <label>Selectionner:</label>
+            <DatePicker selected={choosenDate} onChange={handleChoosenDate} minDate={dateDebut} maxDate={dateFin}
+              dateFormat="dd/MM/yyyy" className="form-control"  
             />
           </div>
           <button className="btn btn-primary mt-3" onClick={handleValidateSelectedDate}>
-            Valider Date Sélectionnée
+            Valider 
           </button>
         </div>
       )}
 
-      {chartData.labels && (
+      {dateGraphe.labels && (
         <div className="chart-container">
           <Line
-            data={chartData}
+            data={dateGraphe}
             options={{
               scales: {
                 x: {
-                  beginAtZero: true,
+                  beginAtZero: false,
                 },
               },
             }}
@@ -162,8 +147,4 @@ function ChartPage() {
 }
 
 export default ChartPage;
-
-
-
-
 

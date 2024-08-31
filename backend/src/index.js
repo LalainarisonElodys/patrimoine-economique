@@ -1,3 +1,4 @@
+
 const express = require("express");
 const cors = require('cors');
 
@@ -77,12 +78,12 @@ let Data = {
       ]
     }
   }
-
+  
+  app.get('/possession', (req, res) => {
+      res.json(Data.data.possessions);
+  });
   app.get('/api/patrimoine', (req, res) => {
     res.json(Data);
-});
-app.get('/possession', (req, res) => {
-    res.json(Data.data.possessions);
 });
 app.post('/possession/create', (req, res) => {
   const patrimoine = Data.data.possessions[0];
@@ -120,18 +121,19 @@ app.put('/possession/:libelle', (req, res) => {
 
       res.status(200).json(possession);
   } else {
-      res.status(404).json({ error: 'Possession non trouvée' });
+      res.status(404).json({ error: 'Possession not found' });
   }
 });
 
 app.get('/api/chart-data', (req, res) => {
     const dateFin = new Date(req.query.dateFin);
     const labels = [];
-    const values = [];
-    res.json({labels, values});
+    const valeur = [];
+    res.json({labels, valeur});
 });
 
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
     
 })
+
