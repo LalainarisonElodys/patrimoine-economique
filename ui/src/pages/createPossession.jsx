@@ -38,7 +38,7 @@ function CreatePossessionPage() {
         return response.json();
       })
       .then(() => {
-        navigate('/');
+        navigate('/possession');
       })
       .catch((error) => {
         console.error('Erreur lors de l\'ajout de la possession:', error);

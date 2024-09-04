@@ -63,7 +63,7 @@ function UpdatePossessionPage() {
         return response.json();
       })
       .then(() => {
-        navigate('/');
+        navigate('/possession');
       })
       .catch(error => {
         console.error('Erreur lors de la mise à jour de la possession:', error);
