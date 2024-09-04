@@ -1,4 +1,3 @@
-
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Navbar, Nav, Container } from 'react-bootstrap';
@@ -8,15 +7,14 @@ const Header = () => {
     return (
         <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
             <Container>
-                <Navbar.Brand as={Link} to="/">
-                    <span className="text-warning">Gestion de Patrimoine</span>
+                <Navbar.Brand >
+                    <h3 className="text-warning">Gestion de Patrimoine</h3>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ml-auto">
                         <Nav.Link as={Link} to="/">Possessions</Nav.Link>
-                        <Nav.Link as={Link} to="/possession/create">Crée une possession</Nav.Link>
-                        <Nav.Link as={Link} to="/chart">Graphique</Nav.Link>
+                        <Nav.Link as={Link} to="/patrimoine">Patrimoine</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>

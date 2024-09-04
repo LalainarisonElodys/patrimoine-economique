@@ -1,48 +1,54 @@
+
 import React, { useState } from 'react';
-import DatePicker from 'react-datepicker';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'chart.js/auto';
-import 'react-datepicker/dist/react-datepicker.css';
 import { Line } from 'react-chartjs-2';
+import 'chart.js/auto';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 
 function ChartPage() {
-  const [dateDebut, setDateDebut] = useState(null);
-  const [step, setStep] = useState(1);
-  const [choosenDate, setChoosenDate] = useState(null);
-  const [dateFin, setDateFin] = useState(null);
-  const [dateGraphe, setDateGraphe] = useState({});
+  const [dateDebut, setdateDebut] = useState(null);
+  const [step, setStep] = useState(1); 
+  const [DateGraphe, setDateGraphe] = useState({});
+  const [dateFin, setdateFin] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
 
-  const handleDateDebut = (date) => {
-    setDateDebut(date);
+  const handledateDebutChange = (date) => {
+    setdateDebut(date);
   };
 
-  const handleDateFin = (date) => {
-    setDateFin(date);
+  const handledateFinChange = (date) => {
+    setdateFin(date);
   };
 
-  const handleChoosenDate = (date) => {
-    setChoosenDate(date);
+  const handleSelectedDateChange = (date) => {
+    setSelectedDate(date);
   };
 
-  const handleValidation = () => {
+  const handleValidationDate = () => {
     if (dateDebut && dateFin && dateDebut <= dateFin) {
       setStep(2); 
-    } 
-  };
-
-  const handleValidateSelectedDate = () => {
-    if (choosenDate && dateDebut && dateFin && choosenDate >= dateDebut && choosenDate <= dateFin) {
-      updateChartData();
+    } else {
+      alert('Veuillez sélectionner des dates valides.');
     }
   };
 
-  const updateChartData = () => {
+  const handleValidateSelectedDate = () => {
+    if (selectedDate && dateDebut && dateFin && selectedDate >= dateDebut && selectedDate <= dateFin) {
+      updateDateGraphe();
+    } else {
+      alert('Veuillez sélectionner une date valide.');
+    }
+  };
+
+  const updateDateGraphe = () => {
     const labels = [];
     const values = [];
 
     const start = new Date(dateDebut);
     const end = new Date(dateFin);
-    const selected = new Date(choosenDate);
+    const selected = new Date(selectedDate);
 
     const daysBetween = (end - start) / (1000 * 60 * 60 * 24);
     const selectedDayIndex = (selected - start) / (1000 * 60 * 60 * 24);
@@ -50,11 +56,12 @@ function ChartPage() {
     for (let i = 0; i <= daysBetween; i++) {
       const currentDate = new Date(start);
       currentDate.setDate(start.getDate() + i);
-      labels.push(currentDate.toISOString().split('T')[0]);
+      labels.push(currentDate.toISOString().split('T')[0]); 
 
+      
       let value;
       if (i <= selectedDayIndex) {
-        value = 10 + i * 3; 
+        value = 10 + i * 3;
       } else {
         value = 10 + selectedDayIndex * 3 - (i - selectedDayIndex) * 2; 
       }
@@ -68,11 +75,11 @@ function ChartPage() {
         {
           label: 'Valeur des Possessions',
           data: values,
-          backgroundColor: '#945bfc', 
-          borderColor: '#80cdd6e0', 
+          backgroundColor: 'rgba(75, 192, 192, 0.2)', 
+          borderColor: 'rgb(75, 192, 192)', 
           borderWidth: 2,
           fill: false, 
-          tension: 0.4, 
+          tension: 0.5, 
           pointRadius: 0, 
         },
       ],
@@ -82,67 +89,77 @@ function ChartPage() {
   };
 
   return (
-    <div className="container mt-3">
-      <h2 className="text-center mb-4">Le Graphique</h2>
-
-      <div className="mb-4">
-        <div className="row">
-          <div className="col-sm-4">
-            <div className="form-group">
-              <label>Date Début :</label>
-              <DatePicker selected={dateDebut} onChange={handleDateDebut} selectsStart dateDebut={dateDebut}
-                dateFin={dateFin} dateFormat="dd/MM/yyyy" className="form-control"
-            />
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="form-group">
-              <label>Date Fin :</label>
-              <DatePicker selected={dateFin} selectsEnd minDate={dateDebut} onChange={handleDateFin}
-                dateDebut={dateDebut} dateFin={dateFin} className="form-control" dateFormat="dd/MM/yyyy"
-             />
-            </div>
-          </div>
-            <div>
-            {step === 1 && (
-            <button className="btn btn-success mt-3 col-sm-2" onClick={handleValidation}>
-                Définir le jour
-            </button>
-            )}
-            </div>
-        </div>
-
-      </div>
-
-      {step === 2 && (
-        <div className="mb-4">
-          <div className="form-group">
-            <label>Selectionner:</label>
-            <DatePicker selected={choosenDate} onChange={handleChoosenDate} minDate={dateDebut} maxDate={dateFin}
-              dateFormat="dd/MM/yyyy" className="form-control"  
-            />
-          </div>
-          <button className="btn btn-success mt-3" onClick={handleValidateSelectedDate}>
-            Valider 
-          </button>
-        </div>
-      )}
-
-      {dateGraphe.labels && (
-        <div className="chart-container">
-          <Line
-            data={dateGraphe}
-            options={{
-              scales: {
-                x: {
-                  beginAtZero: false,
+    <Container>
+        <h4 className='text-decoration-underline mt-5 '>Afficher la graphe</h4>
+      <Container className='bg-light p-2 mt-4 border'>
+      <Row className='mt-3 '>
+        <Col md={5}>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Entrer la date du début:</Form.Label>
+              <div className="d-flex justify-content-between align-items-center">
+                <DatePicker selected={dateDebut} onChange={handledateDebutChange} selectsStart dateDebut={dateDebut}
+                  dateFin={dateFin} dateFormat="dd/MM/yyyy" className="form-control me-2" 
+                />
+              </div>
+            </Form.Group>
+          </Form>
+        </Col>
+        <Col md={5}>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Entrer la date fin:</Form.Label>
+              <div className="d-flex justify-content-between align-items-center">
+                <DatePicker selected={dateFin} onChange={handledateFinChange} selectsEnd dateDebut={dateDebut} dateFin={dateFin}
+                 minDate={dateDebut} dateFormat="dd/MM/yyyy" className="form-control me-2"
+                />
+              </div>
+            </Form.Group>
+          </Form>
+        </Col>
+        <Col md={2}>
+        {step === 1 && (
+          <Button variant="outline-success" className='mt-4' onClick={handleValidationDate}>Valider les dates</Button>
+        )}
+        </Col>
+      </Row>
+      <Row>
+        <Col md={8}>
+          {step === 2 && (
+            <Form>
+              <Form.Group className="mb-3">
+                <Form.Label>Sélectionner la date :</Form.Label>
+                <div className="d-flex justify-content-between align-items-center">
+                  <DatePicker selected={selectedDate} onChange={handleSelectedDateChange} minDate={dateDebut} maxDate={dateFin}
+                    dateFormat="dd/MM/yyyy"  className="form-control me-2"
+                  />
+                  <Button variant="outline-success" onClick={handleValidateSelectedDate}>Valider la date</Button>
+                </div>
+              </Form.Group>
+            </Form> 
+          )}
+        </Col>
+      </Row>
+      </Container>
+      <Row className='mt-5 col-md-10 justify-content-center'>
+        {DateGraphe.labels && (
+          <div className="chart-container">
+            <Line
+              data={DateGraphe}
+              options={{
+                scales: {
+                  x: {
+                    beginAtZero: true,
+                  },
                 },
-              },
-            }}
-          />
-        </div>
-      )}
-    </div>
+              }}
+            />
+          </div>
+        )}
+      </Row>
+    </Container>
+
+    
   );
 }
 

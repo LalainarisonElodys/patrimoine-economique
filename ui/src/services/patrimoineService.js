@@ -8,3 +8,5 @@ export const getValeurPatrimoine = async (date) => {
 export const getValeurPatrimoineRange = (rangeData) => {
     return axios.post('http://localhost:5000/patrimoine/range', rangeData);
 };
+
+
