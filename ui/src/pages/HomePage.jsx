@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Container, Button, Row } from 'react-bootstrap';
 
-function AccueilPage() {
+function HomePage() {
     const navigate = useNavigate();
     return (
         <Container>
@@ -15,5 +15,5 @@ function AccueilPage() {
         </Container>
     )
 }
-export default AccueilPage;
+export default HomePage;
 

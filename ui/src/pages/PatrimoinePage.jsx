@@ -90,7 +90,7 @@ function PatrimoinePage() {
           </Form>
         </Col>
         <Col md={7} >
-          <h4 className='mt-5 border p-4 bg-info' >La valeur de la patrimoine: {totalValeurActuelle} Ar</h4>
+          <h4 className='mt-5 border p-4 bg-info' >La valeur de la patrimoine est: {totalValeurActuelle} Ar</h4>
         </Col>
       </Row>
 

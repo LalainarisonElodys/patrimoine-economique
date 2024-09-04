@@ -6,7 +6,7 @@ import PatrimoinePage from './pages/PatrimoinePage';
 import PossessionListPage from './pages/possessionList';
 import CreatePossessionPage from './pages/createPossession';
 import UpdatePossessionPage from './pages/updatePossession';
-import AccueilPage from './pages/AccueilPage';
+import HomePage from './pages/HomePage';
 
 const App = () => {
     return (
@@ -17,7 +17,7 @@ const App = () => {
             <br />
             <br />
             <Routes>
-                <Route path="/" element={<AccueilPage />} />
+                <Route path="/" element={<HomePage />} />
                 <Route path="/possession" element={<PossessionListPage />} />
                 <Route path="/patrimoine" element={<PatrimoinePage />} />
                 <Route path="/possession/create" element={<CreatePossessionPage />} />
