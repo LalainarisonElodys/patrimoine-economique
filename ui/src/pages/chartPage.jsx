@@ -99,7 +99,7 @@ function ChartPage() {
               <Form.Label>Entrer la date du début:</Form.Label>
               <div className="d-flex justify-content-between align-items-center">
                 <DatePicker selected={dateDebut} onChange={handledateDebutChange} selectsStart dateDebut={dateDebut}
-                  dateFin={dateFin} dateFormat="dd/MM/yyyy" className="form-control me-2" 
+                  dateFin={dateFin} dateFormat="dd/MM/yyyy" className="form-control me-2" placeholderText='entrer'
                 />
               </div>
             </Form.Group>
@@ -111,7 +111,7 @@ function ChartPage() {
               <Form.Label>Entrer la date fin:</Form.Label>
               <div className="d-flex justify-content-between align-items-center">
                 <DatePicker selected={dateFin} onChange={handledateFinChange} selectsEnd dateDebut={dateDebut} dateFin={dateFin}
-                 minDate={dateDebut} dateFormat="dd/MM/yyyy" className="form-control me-2"
+                 minDate={dateDebut} dateFormat="dd/MM/yyyy" className="form-control me-2" placeholderText='entrer'
                 />
               </div>
             </Form.Group>
@@ -131,7 +131,7 @@ function ChartPage() {
                 <Form.Label>Sélectionner la date :</Form.Label>
                 <div className="d-flex justify-content-between align-items-center">
                   <DatePicker selected={selectedDate} onChange={handleSelectedDateChange} minDate={dateDebut} maxDate={dateFin}
-                    dateFormat="dd/MM/yyyy"  className="form-control me-2"
+                    dateFormat="dd/MM/yyyy"  className="form-control me-2" placeholderText='entrer'
                   />
                   <Button variant="outline-success" onClick={handleValidateSelectedDate}>Valider la date</Button>
                 </div>

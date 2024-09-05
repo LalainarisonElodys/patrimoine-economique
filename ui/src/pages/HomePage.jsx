@@ -9,8 +9,8 @@ function HomePage() {
                 <h1>Bienvenue dans la gestion de patrimoine</h1>
             </Row>
             <Row md={4} className='mt-5 d-flex justify-content-evenly'>
-            <Button variant='outline-warning' onClick={() => navigate(`/possession`)}>Voir possession</Button>
-            <Button variant='outline-warning' onClick={() => navigate(`/patrimoine`)}>Voir patrimoine</Button>
+                <Button variant='outline-warning' onClick={() => navigate(`/possession`)}>Voir possession</Button>
+                <Button variant='outline-warning' onClick={() => navigate(`/patrimoine`)}>Voir patrimoine</Button>
             </Row>
         </Container>
     )
