@@ -59,7 +59,7 @@ function ChartPage() {
       if (i <= dateSelectionner) {
         value = 10 + i * 2;
       } else {
-        value = 10 + dateSelectionner * 3 + (i - dateSelectionner) * 2; 
+        value = 10 + dateSelectionner * 3 - (i - dateSelectionner) * 2; 
       }
 
       valeurs.push(value);
@@ -70,7 +70,7 @@ function ChartPage() {
       datasets: [
         {
           data: valeurs, label: 'Possession',backgroundColor: 'rgba(75, 192, 192, 0.2)', borderColor: 'rgb(75, 192, 192)', 
-          borderWidth: 1,fill: false, tension: 0.5, pointRadius: 0.1, 
+          borderWidth: 1,fill: false, tension: 0.5, pointRadius: 1
         },
       ],
     };
