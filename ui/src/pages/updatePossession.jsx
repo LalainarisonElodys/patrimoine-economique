@@ -82,12 +82,13 @@ function UpdatePossessionPage() {
             <Form.Group className="mb-3">
               <Form.Label>Nom du Possesseur</Form.Label>
               <Form.Control type="text" value={possesseur} onChange={(e) => setPossesseur(e.target.value)} required
+              
               />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Libellé</Form.Label>
               <Form.Control type="text" value={libelleState} onChange={(e) => setLibelleState(e.target.value)} required
-                disabled
+                
               />
             </Form.Group>
             <Form.Group className="mb-3">

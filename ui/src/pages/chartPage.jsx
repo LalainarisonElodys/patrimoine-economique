@@ -29,58 +29,48 @@ function ChartPage() {
   const handleValidationDate = () => {
     if (dateDebut && dateFin && dateDebut <= dateFin) {
       setStep(2); 
-    } else {
-      alert('Veuillez sélectionner des dates valides.');
     }
   };
 
   const handleValidateSelectedDate = () => {
     if (selectedDate && dateDebut && dateFin && selectedDate >= dateDebut && selectedDate <= dateFin) {
       updateDateGraphe();
-    } else {
-      alert('Veuillez sélectionner une date valide.');
     }
   };
 
   const updateDateGraphe = () => {
     const labels = [];
-    const values = [];
+    const valeurs = [];
 
-    const start = new Date(dateDebut);
-    const end = new Date(dateFin);
+    const debut = new Date(dateDebut);
+    const fin = new Date(dateFin);
     const selected = new Date(selectedDate);
 
-    const daysBetween = (end - start) / (1000 * 60 * 60 * 24);
-    const selectedDayIndex = (selected - start) / (1000 * 60 * 60 * 24);
+    const dateEntreDebutFin = (fin - debut) / (1000 * 60 * 60 * 24);
+    const dateSelectionner = (selected - debut) / (1000 * 60 * 60 * 24);
 
-    for (let i = 0; i <= daysBetween; i++) {
-      const currentDate = new Date(start);
-      currentDate.setDate(start.getDate() + i);
+    for (let i = 0; i <= dateEntreDebutFin; i++) {
+      const currentDate = new Date(debut);
+      currentDate.setDate(debut.getDate() + i);
       labels.push(currentDate.toISOString().split('T')[0]); 
 
       
       let value;
-      if (i <= selectedDayIndex) {
-        value = 10 + i * 3;
+      if (i <= dateSelectionner) {
+        value = 10 + i * 2;
       } else {
-        value = 10 + selectedDayIndex * 3 - (i - selectedDayIndex) * 2; 
+        value = 10 + dateSelectionner * 3 - (i - dateSelectionner) * 2; 
       }
 
-      values.push(value);
+      valeurs.push(value);
     }
 
     const data = {
       labels: labels,
       datasets: [
         {
-          label: 'Valeur des Possessions',
-          data: values,
-          backgroundColor: 'rgba(75, 192, 192, 0.2)', 
-          borderColor: 'rgb(75, 192, 192)', 
-          borderWidth: 2,
-          fill: false, 
-          tension: 0.5, 
-          pointRadius: 0, 
+          data: valeurs, label: 'Possession',backgroundColor: 'rgba(75, 192, 192, 0.2)', borderColor: 'rgb(75, 192, 192)', 
+          borderWidth: 1,fill: false, tension: 0.5, pointRadius: 0.1, 
         },
       ],
     };
@@ -90,56 +80,56 @@ function ChartPage() {
 
   return (
     <Container>
-        <h4 className='text-decoration-underline mt-5 '>Afficher la graphe</h4>
+      <h4 className='text-decoration-underline mt-5 '>Afficher la graphe</h4>
       <Container className='bg-light p-2 mt-4 border'>
-      <Row className='mt-3 '>
-        <Col md={5}>
-          <Form>
-            <Form.Group className="mb-3">
-              <Form.Label>Entrer la date du début:</Form.Label>
-              <div className="d-flex justify-content-between align-items-center">
-                <DatePicker selected={dateDebut} onChange={handledateDebutChange} selectsStart dateDebut={dateDebut}
-                  dateFin={dateFin} dateFormat="dd/MM/yyyy" className="form-control me-2" placeholderText='entrer'
-                />
-              </div>
-            </Form.Group>
-          </Form>
-        </Col>
-        <Col md={5}>
-          <Form>
-            <Form.Group className="mb-3">
-              <Form.Label>Entrer la date fin:</Form.Label>
-              <div className="d-flex justify-content-between align-items-center">
-                <DatePicker selected={dateFin} onChange={handledateFinChange} selectsEnd dateDebut={dateDebut} dateFin={dateFin}
-                 minDate={dateDebut} dateFormat="dd/MM/yyyy" className="form-control me-2" placeholderText='entrer'
-                />
-              </div>
-            </Form.Group>
-          </Form>
-        </Col>
-        <Col md={2}>
-        {step === 1 && (
-          <Button variant="outline-success" className='mt-4' onClick={handleValidationDate}>Valider les dates</Button>
-        )}
-        </Col>
-      </Row>
-      <Row>
-        <Col md={8}>
-          {step === 2 && (
+        <Row className='mt-3 '>
+          <Col md={5}>
             <Form>
               <Form.Group className="mb-3">
-                <Form.Label>Sélectionner la date :</Form.Label>
+                <Form.Label>Entrer la date du début:</Form.Label>
                 <div className="d-flex justify-content-between align-items-center">
-                  <DatePicker selected={selectedDate} onChange={handleSelectedDateChange} minDate={dateDebut} maxDate={dateFin}
-                    dateFormat="dd/MM/yyyy"  className="form-control me-2" placeholderText='entrer'
+                  <DatePicker selected={dateDebut} onChange={handledateDebutChange} selectsStart dateDebut={dateDebut}
+                    dateFin={dateFin} dateFormat="dd/MM/yyyy" className="form-control me-2" placeholderText='entrer'
                   />
-                  <Button variant="outline-success" onClick={handleValidateSelectedDate}>Valider la date</Button>
                 </div>
               </Form.Group>
-            </Form> 
+            </Form>
+          </Col>
+          <Col md={5}>
+            <Form>
+              <Form.Group className="mb-3">
+                <Form.Label>Entrer la date fin:</Form.Label>
+                <div className="d-flex justify-content-between align-items-center">
+                  <DatePicker selected={dateFin} onChange={handledateFinChange} selectsEnd dateDebut={dateDebut} dateFin={dateFin}
+                  minDate={dateDebut} dateFormat="dd/MM/yyyy" className="form-control me-2" placeholderText='entrer'
+                  />
+                </div>
+              </Form.Group>
+            </Form>
+          </Col>
+          <Col md={2}>
+          {step === 1 && (
+            <Button variant="outline-success" className='mt-4' onClick={handleValidationDate}>Valider les dates</Button>
           )}
-        </Col>
-      </Row>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={8}>
+            {step === 2 && (
+              <Form>
+                <Form.Group className="mb-3">
+                  <Form.Label>Sélectionner la date :</Form.Label>
+                  <div className="d-flex justify-content-between align-items-center">
+                    <DatePicker selected={selectedDate} onChange={handleSelectedDateChange} minDate={dateDebut} maxDate={dateFin}
+                      dateFormat="dd/MM/yyyy"  className="form-control me-2" placeholderText='entrer'
+                    />
+                    <Button variant="outline-success" onClick={handleValidateSelectedDate}>Valider la date</Button>
+                  </div>
+                </Form.Group>
+              </Form> 
+            )}
+          </Col>
+        </Row>
       </Container>
       <Row className='mt-5 col-md-10 justify-content-center'>
         {DateGraphe.labels && (

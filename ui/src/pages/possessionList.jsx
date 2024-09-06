@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useNavigation } from 'react-router-dom';
-import { Container, Row, Col, Table, Form, Button } from 'react-bootstrap';
+import { Link, useNavigate} from 'react-router-dom';
+import { Container, Row, Col, Table, Button } from 'react-bootstrap';
 import Possession from '../../../models/possessions/Possession';
 
 function PossessionPage() {
@@ -19,7 +19,7 @@ function PossessionPage() {
       .then(data => {
         const possessionsData = data.data.possessions[0].data.possessions;
 
-        const loadedPossessions = possessionsData.map(possession =>
+        const loadPoss = possessionsData.map(possession =>
           new Possession(
             possession.possesseur.nom,
             possession.libelle,
@@ -31,7 +31,7 @@ function PossessionPage() {
           )
         );
 
-        setPossessions(loadedPossessions);
+        setPossessions(loadPoss);
       })
       .catch(error => {
         console.error('Erreur lors du chargement des données:', error);
@@ -60,7 +60,6 @@ function PossessionPage() {
           <Table  bordered border={4} className="mt-3 container">
             <thead>
               <tr className="text-center">
-                <th>Possesseur</th>
                 <th>Libelle</th>
                 <th>Valeur Initiale</th>
                 <th>Valeur Actuelle</th>
@@ -78,16 +77,15 @@ function PossessionPage() {
               ) : (
                 possessions.map((item, index) => (
                   <tr key={index}>
-                      <td>{item.possesseur}</td>
                       <td>{item.libelle}</td>
                       <td>{getValeurInitiale(item)} Ar</td>
                       <td>{item.getValeur(selectedDate)} Ar</td>
                       <td>{new Date(item.dateDebut).toLocaleDateString()}</td>
                       <td>{item.dateFin ? new Date(item.dateFin).toLocaleDateString() : 'En cours'}</td>
                       <td>{item.tauxAmortissement} %</td>
-                      <td>
-                          <Button variant='outline-warning' onClick={() => navigate(`/possession/${item.libelle}/update`)}>Edit</Button>
-                          <Button variant="outline-danger" onClick={() => closePossession(item.libelle)}>Close</Button>
+                      <td className='d-flex justify-content-between'>
+                          <Button variant='outline-warning' onClick={() => navigate(`/possession/${item.libelle}/update`)}>Modifier</Button>
+                          <Button variant="outline-danger" onClick={() => closePossession(item.libelle)}>Clôturer</Button>
                       </td>
                   </tr>
               ))
@@ -97,7 +95,7 @@ function PossessionPage() {
         </Col>
       </Row>
       <Row>
-      <Link to={`/possession/create`} className="btn btn-primary me-2 col-sm-2 mt-4">Créer une possession</Link>
+      <Link to={`/possession/create`} className="btn btn-primary me-2 col-sm-2 mb-5 mt-4">Créer une possession</Link>
       </Row>
     </Container>
   );

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
@@ -46,7 +45,9 @@ function PatrimoinePage() {
     setSelectedDate(date);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
     if (selectedDate) {
       const updatedPossessions = possessions.map(possession => {
         return new Possession(
@@ -60,14 +61,12 @@ function PatrimoinePage() {
         )
       });
 
-      const total = updatedPossessions.reduce((sum, possession) => {
+      const totalPatrimoine = updatedPossessions.reduce((sum, possession) => {
         return sum + possession.getValeur(selectedDate);
       }, 0);
 
       setPossessions(updatedPossessions);
-      setTotalValeurActuelle(total);
-    } else {
-      alert('Veuillez sélectionner une date.');
+      setTotalValeurActuelle(totalPatrimoine);
     }
   };
 
@@ -82,7 +81,7 @@ function PatrimoinePage() {
             <Form.Group className="mb-3">
               <Form.Label>Sélectionner une date :</Form.Label>
               <div className="d-flex justify-content-between align-items-center">
-                <DatePicker selected={selectedDate} onchange={handleDateChange} dateFormat="dd/MM/yyyy" className="form-control me-2"
+                <DatePicker selected={selectedDate} onChange={handleDateChange} dateFormat="dd/MM/yyyy" className="form-control me-2"
                 />
                 <Button variant="outline-success" onClick={handleSubmit}>Valider</Button>
               </div>
