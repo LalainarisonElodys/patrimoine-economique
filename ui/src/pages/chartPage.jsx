@@ -59,7 +59,7 @@ function ChartPage() {
       if (i <= dateSelectionner) {
         value = 10 + i * 2;
       } else {
-        value = 10 + dateSelectionner * 3 - (i - dateSelectionner) * 2; 
+        value = 10 + dateSelectionner * 3 + (i - dateSelectionner) * 2; 
       }
 
       valeurs.push(value);

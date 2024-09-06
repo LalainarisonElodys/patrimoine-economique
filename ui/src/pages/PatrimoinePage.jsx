@@ -64,6 +64,7 @@ function PatrimoinePage() {
       const totalPatrimoine = updatedPossessions.reduce((sum, possession) => {
         return sum + possession.getValeur(selectedDate);
       }, 0);
+      console.log('Valeur totale du patrimoine:', totalPatrimoine);
 
       setPossessions(updatedPossessions);
       setTotalValeurActuelle(totalPatrimoine);
