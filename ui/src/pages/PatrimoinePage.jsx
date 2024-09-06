@@ -12,7 +12,7 @@ function PatrimoinePage() {
   const [totalValeurActuelle, setTotalValeurActuelle] = useState(0);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/patrimoine`)
+    fetch('http://localhost:5000/api/patrimoine')
       .then(response => {
         if (!response.ok) {
           throw new Error('Erreur réseau');

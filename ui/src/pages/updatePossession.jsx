@@ -49,7 +49,7 @@ function UpdatePossessionPage() {
       tauxAmortissement: parseFloat(tauxAmortissement),
     };
 
-    fetch(`${process.env.REACT_APP_API_URL}/possession/${libelle}`,{
+    fetch(`http://localhost:5000/possession/${libelle}`, {	
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

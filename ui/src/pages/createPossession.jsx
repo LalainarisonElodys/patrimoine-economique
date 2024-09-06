@@ -23,7 +23,7 @@ function CreatePossessionPage() {
       valeurConstante: parseFloat(valeurConstante),
     };
 
-    fetch(`${process.env.REACT_APP_API_URL}/possession/create`, {
+    fetch('http://localhost:5000/possession/create', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
