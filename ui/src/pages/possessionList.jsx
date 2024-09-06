@@ -9,7 +9,7 @@ function PossessionPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/patrimoine')
+    fetch(`${process.env.REACT_APP_API_URL}/api/patrimoine`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Erreur réseau');
@@ -43,7 +43,7 @@ function PossessionPage() {
   };
 
   const closePossession = (libelle) => {
-    fetch(`/possession/${libelle}/close`, { method: 'PUT' })
+    fetch(`${process.env.REACT_APP_API_URL}/possession/${libelle}/close`, { method: 'PUT' })
       .then(() => setPossessions(possessions.filter(p => p.libelle !== libelle)))
       .catch(error => console.error('Erreur lors de la fermeture de la possession:', error));
   };
@@ -84,7 +84,7 @@ function PossessionPage() {
                       <td>{item.dateFin ? new Date(item.dateFin).toLocaleDateString() : 'En cours'}</td>
                       <td>{item.tauxAmortissement} %</td>
                       <td className='d-flex justify-content-between'>
-                          <Button variant='outline-warning' onClick={() => navigate(`/possession/${item.libelle}/update`)}>Modifier</Button>
+                          <Button variant='outline-warning' onClick={() => navigate(`${process.env.REACT_APP_API_URL}/possession/${libelle}/close`)}>Modifier</Button>
                           <Button variant="outline-danger" onClick={() => closePossession(item.libelle)}>Clôturer</Button>
                       </td>
                   </tr>
